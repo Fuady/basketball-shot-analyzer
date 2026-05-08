@@ -1,0 +1,58 @@
+# Python
+__pycache__/
+*.py[cod]
+*.so
+.Python
+build/
+dist/
+*.egg-info/
+venv/
+.venv/
+env/
+
+# Jupyter
+.ipynb_checkpoints/
+
+# Data (use DVC for large files)
+data/raw/videos/
+data/raw/poses/
+data/processed/keypoints/
+data/processed/sequences/
+
+# Keep processed CSVs and annotations
+!data/processed/features/*.csv
+!data/annotations/*.csv
+!data/annotations/.gitkeep
+
+# Models
+models/bilstm/
+models/*.pkl
+models/*.pt
+!models/.gitkeep
+
+# MLflow
+mlruns/
+mlartifacts/
+
+# Environment
+.env
+*.env.local
+
+# IDE
+.vscode/
+.idea/
+.DS_Store
+
+# Test & coverage
+.pytest_cache/
+.coverage
+htmlcov/
+
+# Outputs
+outputs/
+*.mp4
+*.avi
+
+# Keep docs plots
+!docs/eda_report/.gitkeep
+!docs/evaluation/.gitkeep
