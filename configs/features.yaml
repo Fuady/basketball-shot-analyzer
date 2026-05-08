@@ -1,0 +1,57 @@
+# Feature Definitions for Basketball Shot Analysis
+
+# Sequence features fed into BiLSTM (per timestep)
+sequence_features:
+  - elbow_angle              # shooting elbow angle (degrees)
+  - shoulder_angle           # shoulder angle (degrees)
+  - right_knee_angle         # right knee flexion (degrees)
+  - left_knee_angle          # left knee flexion (degrees)
+  - trunk_lean               # forward trunk lean (degrees)
+  - shoulder_tilt            # shoulder horizontal misalignment (degrees)
+  - wrist_height_norm        # wrist height normalized by torso length
+  - wrist_speed              # wrist speed (normalized units/sec)
+  - elbow_angle_vel          # elbow angular velocity (degrees/sec)
+  - shoulder_angle_vel       # shoulder angular velocity (degrees/sec)
+  - right_knee_angle_vel     # knee angular velocity (degrees/sec)
+  - wrist_height_norm_vel    # wrist height velocity
+
+# Release snapshot features fed into Form Scorer (per shot)
+release_features:
+  - release_elbow_angle      # elbow angle at release frame
+  - release_shoulder_angle   # shoulder angle at release frame
+  - release_knee_angle       # knee angle at release frame
+  - release_wrist_height     # wrist height at release frame
+  - release_trunk_lean       # trunk lean at release frame
+  - release_shoulder_tilt    # shoulder tilt at release frame
+  - release_wrist_speed      # wrist speed at release frame
+  - pre_release_knee_bend    # mean knee angle 5-15 frames before release
+  - pre_release_elbow_angle  # mean elbow angle 3-10 frames before release
+  - follow_through_elbow     # mean elbow angle 3-10 frames after release
+  - follow_through_wrist_drop # mean wrist speed 3-8 frames after release
+  - max_wrist_speed          # peak wrist speed in entire shot
+  - max_elbow_extension      # maximum elbow extension angle
+  - min_knee_angle           # minimum knee angle (deepest bend)
+  - seq_length               # total clip length in frames
+
+# MediaPipe landmark groups used for feature computation
+landmark_groups:
+  shooting_arm:
+    - right_shoulder
+    - right_elbow
+    - right_wrist
+  support_arm:
+    - left_shoulder
+    - left_elbow
+    - left_wrist
+  lower_body:
+    - right_hip
+    - right_knee
+    - right_ankle
+    - left_hip
+    - left_knee
+    - left_ankle
+  trunk:
+    - left_shoulder
+    - right_shoulder
+    - left_hip
+    - right_hip

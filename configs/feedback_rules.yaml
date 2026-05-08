@@ -1,0 +1,53 @@
+# Biomechanical Feedback Rules
+# ideal_low / ideal_high define the acceptable range
+# Messages use {val} as placeholder for the actual measured value
+
+rules:
+  - feature: release_elbow_angle
+    ideal_low: 80
+    ideal_high: 105
+    low_msg: "Elbow too bent at release ({val:.0f}°). Extend arm more — target 80–105°."
+    high_msg: "Elbow too wide at release ({val:.0f}°). Tuck elbow in — target 80–105°."
+    weight: 3
+
+  - feature: pre_release_knee_bend
+    ideal_low: 120
+    ideal_high: 155
+    low_msg: "Not enough knee bend ({val:.0f}°). Bend deeper — target 120–155°."
+    high_msg: "Squatting too deep ({val:.0f}°). Moderate bend — target 120–155°."
+    weight: 2
+
+  - feature: release_wrist_height
+    ideal_low: 0.8
+    ideal_high: 2.5
+    low_msg: "Release point too low (height={val:.2f}). Release higher — above your head."
+    high_msg: null
+    weight: 3
+
+  - feature: release_shoulder_tilt
+    ideal_low: 0.0
+    ideal_high: 8.0
+    low_msg: null
+    high_msg: "Shoulders uneven ({val:.1f}° tilt). Keep shoulders level at release."
+    weight: 2
+
+  - feature: follow_through_elbow
+    ideal_low: 150
+    ideal_high: 180
+    low_msg: "Incomplete follow-through — elbow at {val:.0f}°. Snap wrist all the way through."
+    high_msg: null
+    weight: 2
+
+  - feature: release_wrist_speed
+    ideal_low: 1.5
+    ideal_high: 99
+    low_msg: "Wrist snap too slow ({val:.2f}). Accelerate — flick wrist at release."
+    high_msg: null
+    weight: 2
+
+  - feature: release_trunk_lean
+    ideal_low: 0.0
+    ideal_high: 15.0
+    low_msg: null
+    high_msg: "Leaning back too far ({val:.1f}°). Stay balanced over your feet."
+    weight: 2

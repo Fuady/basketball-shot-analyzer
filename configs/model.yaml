@@ -1,0 +1,23 @@
+# BiLSTM Model Configuration
+bilstm:
+  input_size: 12          # number of biomechanical features per timestep
+  hidden_size: 128        # LSTM hidden units per direction
+  num_layers: 2           # stacked LSTM layers
+  dropout: 0.3
+  seq_len: 30             # frames per sequence (1 second at 30fps)
+
+training:
+  epochs: 100
+  batch_size: 32
+  learning_rate: 0.001
+  weight_decay: 0.0001
+  patience: 15            # early stopping
+  scheduler_patience: 8
+
+# XGBoost Form Scorer
+form_scorer:
+  n_estimators: 200
+  max_depth: 4
+  learning_rate: 0.05
+  subsample: 0.8
+  colsample_bytree: 0.8
