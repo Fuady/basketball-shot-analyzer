@@ -1,0 +1,57 @@
+version: "3.9"
+
+services:
+  api:
+    build: .
+    container_name: bball_api
+    ports: ["8000:8000"]
+    volumes:
+      - ./models:/app/models:ro
+      - ./data:/app/data:ro
+    environment:
+      - BILSTM_PATH=models/bilstm/best_model.pt
+      - FORM_MODEL_PATH=models/form_scorer.pkl
+      - SCALER_PATH=data/processed/sequences/sequence_scaler.pkl
+      - MAX_VIDEO_SIZE_MB=200
+    restart: unless-stopped
+
+  dashboard:
+    build: .
+    container_name: bball_dashboard
+    command: streamlit run src/api/dashboard.py --server.port 8501 --server.address 0.0.0.0
+    ports: ["8501:8501"]
+    environment: [API_URL=http://api:8000]
+    depends_on: [api]
+    restart: unless-stopped
+
+  mlflow:
+    image: python:3.10-slim
+    container_name: bball_mlflow
+    command: >
+      bash -c "pip install mlflow==2.12.2 -q &&
+               mlflow server --host 0.0.0.0 --port 5000
+               --backend-store-uri sqlite:///mlruns/mlflow.db
+               --default-artifact-root /mlruns/artifacts"
+    ports: ["5000:5000"]
+    volumes: [mlruns:/mlruns]
+    restart: unless-stopped
+
+  prometheus:
+    image: prom/prometheus:v2.51.0
+    ports: ["9090:9090"]
+    volumes: [./configs/prometheus.yml:/etc/prometheus/prometheus.yml:ro]
+    restart: unless-stopped
+
+  grafana:
+    image: grafana/grafana:10.4.0
+    ports: ["3000:3000"]
+    environment:
+      - GF_SECURITY_ADMIN_PASSWORD=admin
+      - GF_USERS_ALLOW_SIGN_UP=false
+    volumes: [grafana_data:/var/lib/grafana]
+    depends_on: [prometheus]
+    restart: unless-stopped
+
+volumes:
+  mlruns:
+  grafana_data:
